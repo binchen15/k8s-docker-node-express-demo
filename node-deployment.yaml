@@ -1,0 +1,42 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: node-express-service
+spec:
+  selector:
+    app: node-express
+  ports:
+    - protocol: "TCP"
+      # port accessible within the cluster
+      port: 3001
+      # port to forward to inside the pod
+      targetPort: 3000
+      # port outside the cluster
+      nodePort: 30321
+  # type: NodePort
+  type: LoadBalancer
+  #externalIPs:
+  #  - 10.0.0.118
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: node-express-dep
+  labels:
+    app: node-express
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: node-express
+  template:
+    metadata:
+      labels:
+        app: node-express
+    spec:
+      containers:
+        - image: binchen15/node-express-demo
+          name: node-express
+          ports:
+            - containerPort: 3000

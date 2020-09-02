@@ -1,0 +1,8 @@
+# node module file
+node_modules
+
+# debug log
+npm-debug.log
+
+# k8s yaml
+node-deployment.yaml
